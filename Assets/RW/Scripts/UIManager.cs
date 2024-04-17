@@ -5,8 +5,21 @@ using UnityEngine.SceneManagement;
 
 
 public class UIManager : MonoBehaviour
-{    public void StartGame()
+{
+    public Animator startButton;
+    public Animator settingsButton;
+    public void OpenSettings()
+    {
+        startButton.SetBool("isHidden", true);
+        settingsButton.SetBool("isHidden", true);
+    }
+    public void StartGame()
+
     {
         SceneManager.LoadScene("RocketMouse");
     }
 }
+
+
+
+
