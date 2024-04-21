@@ -31,6 +31,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+// using static System.Net.Mime.MediaTypeNames;
+using UnityEngine.UI;
 
 public class MouseController : MonoBehaviour 
 {
@@ -44,15 +46,22 @@ public class MouseController : MonoBehaviour
     public AudioSource jetpackAudio;
     public AudioSource footstepsAudio;
     public ParallaxScroll parallax;
+    public Text coinsLabel;
+    public GameObject restartDialog;
 
     private Animator animator;
     private bool grounded;
     private bool dead = false;
     private uint coins = 0;
 
+    public Text CoinsLabel { get => CoinsLabel1; set => CoinsLabel1 = value; }
+    public Text CoinsLabel1 { get => coinsLabel; set => coinsLabel = value; }
+
     void Start () 
     {
-        animator = GetComponent<Animator>();	
+        animator = GetComponent<Animator>();
+        restartDialog.SetActive(false);
+
     }
 
     void FixedUpdate () 
@@ -108,6 +117,8 @@ public class MouseController : MonoBehaviour
 	    }
 	    dead = true;
 	    animator.SetBool("dead", true);
+        restartDialog.SetActive(true);
+
     }
 
     void CollectCoin(Collider2D coinCollider) 
@@ -115,15 +126,12 @@ public class MouseController : MonoBehaviour
         coins++;
         Destroy(coinCollider.gameObject);
         AudioSource.PlayClipAtPoint(coinCollectSound, transform.position);
+        CoinsLabel1.text = coins.ToString();
+
     }
 
-    void OnGUI() 
-    {
-        DisplayCoinsCount();
-        DisplayRestartButton();
-    }
 
-    void DisplayCoinsCount() 
+void DisplayCoinsCount() 
     {
 	    Rect coinIconRect = new Rect(10, 10, 32, 32);
 	    GUI.DrawTexture(coinIconRect, coinIconTexture);                         
@@ -156,4 +164,16 @@ public class MouseController : MonoBehaviour
       jetpackAudio.enabled =  !dead && !grounded;
 	  jetpackAudio.volume = jetpackActive ? 1.0f : 0.5f;        
   }
+
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ExitToMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
 }
+
