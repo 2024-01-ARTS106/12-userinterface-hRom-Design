@@ -12,7 +12,7 @@ public class InventoryItemButton : MonoBehaviour
     
     void Awake()
     {
-        typeIndex = Random.Range(0, 3);
+        typeIndex = UnityEngine.Random.Range(0, 3);
         buttonText = GetComponentInChildren<Text>();
         buttonText.text = itemTypes[typeIndex];
     }
